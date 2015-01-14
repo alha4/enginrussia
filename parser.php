@@ -3,7 +3,28 @@
  ini_set('error_reporting', E_ALL);
  error_reporting(E_ALL);
  
- namespace Alpha\SimpleParser;
+ namespace Alpha\SimpleWebParser;
+ 
+ interface HttpLoader {
+    function load();
+ }
+ 
+ interface dataRender {
+    function render();
+ }
+ 
+ class MultiLoader implements HttpLoader {
+    #code
+ }
+ 
+ class SimpleLoader implements HttpLoader{
+    #code
+ }
+ 
+ abstract class HttpException extends Exception {
+    #code
+ }
+ 
  
  class WebPageParser {
     
@@ -13,7 +34,7 @@
         $this->webPagesURI = $url;
         //$this->load();
     }
-    public function load() {
+    public function load(HttpLoader $loader) {
       try {
         if(!$this->is_loaded_curl_module()) {
          
@@ -21,11 +42,13 @@
         }
         $pages_url = $this->webPagesURI;
         
-        $mñ = curl_multi_init();
+        $loader->load($pages_url);
+        
+        /*$mñ = curl_multi_init();
         
         foreach($pages_url as $url) {
             
-        }
+        }*/
         
       } catch(Exception $err) {
          echo 'errir load modules';  
